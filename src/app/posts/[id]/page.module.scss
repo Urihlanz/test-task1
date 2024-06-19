@@ -1,0 +1,50 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6rem;
+    min-height: 100vh;
+    background: rgb(0, 49, 107);
+    background: linear-gradient(147deg, rgba(0, 49, 107, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(97, 7, 38, 1) 100%) no-repeat;
+  
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 90vh;
+      height: 80vh;
+      background: #fff;
+      border-radius: 30px;
+      padding: 6rem;
+
+        .title {
+            color: rgba($color: #000, $alpha: 0.9);
+            font-weight: 800;
+            font-size: 22px;
+        }
+
+        .text {
+            color: rgba($color: #000, $alpha: 0.8);
+            font-weight: 400;
+            font-size: 18px;
+            overflow: hidden;
+        }
+
+        .comments {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 60%;
+            overflow-y: scroll;
+        }
+
+        .commentCard {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #c3c3c3;
+        }
+    }
+  }
+  
+  
