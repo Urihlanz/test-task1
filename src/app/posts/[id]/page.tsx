@@ -4,7 +4,7 @@ import React, { cache, JSX } from 'react';
 
 import styles from './page.module.scss';
 
-type PostPropTypes = {
+type PageProps = {
   params: Record<string, number>;
   searchParams: Record<string, never>;
 };
@@ -37,7 +37,7 @@ const getPost = cache(
   },
 );
 
-export async function generateMetadata({ params }: PostPropTypes): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { postData } = await getPost(params);
   const title = postData?.title;
   const description = postData?.body;
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: PostPropTypes): Promise<Metad
   };
 }
 
-const Post = async ({ params }: PostPropTypes): Promise<JSX.Element> => {
+const Post = async ({ params }: PageProps): Promise<JSX.Element> => {
   const { postData, commentData } = await getPost(params);
 
   return (

@@ -2,7 +2,7 @@
 
 import { Button, TextField } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import React, { JSX, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 
 import styles from './styles.module.scss';
 
@@ -12,6 +12,10 @@ export const AuthForm = (): JSX.Element => {
   const [password, setPassword] = useState('');
   const [isAuthFailed, setIsAuthFailed] = useState<boolean>(false);
 
+  useEffect(() => {
+    setIsAuthFailed(false);
+  }, [login, password]);
+
   const signIn = async (formData: FormData): Promise<void> => {
     try {
       const res = await fetch(`${process.env.BASE_URL}/api/auth`, {
@@ -20,7 +24,7 @@ export const AuthForm = (): JSX.Element => {
       });
       const { isAuth } = (await res.json()) as { isAuth: boolean };
 
-      setIsAuthFailed(isAuth);
+      setIsAuthFailed(!isAuth);
 
       if (isAuth) {
         router.push('/posts');
