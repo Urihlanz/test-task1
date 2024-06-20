@@ -2,6 +2,10 @@
   "name": "test-task",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.14.0"
+  },
+  "author": "<urihlanz@yandex.ru>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,13 +13,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@fontsource/roboto": "^5.0.13",
-    "@mui/material": "^5.15.20",
-    "nanostores": "^0.10.3",
+    "@emotion/react": "11.11.4",
+    "@emotion/styled": "11.11.5",
+    "@fontsource/roboto": "5.0.13",
+    "@mui/material": "5.15.20",
+    "nanostores": "0.10.3",
     "next": "14.2.4",
-    "next-seo": "^6.5.0",
+    "next-seo": "6.5.0",
     "react": "18",
     "react-dom": "18"
   },

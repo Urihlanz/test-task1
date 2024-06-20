@@ -1,0 +1,14 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 300px;
+    padding: 10px;
+    justify-content: space-around;
+    background-color: #fff;
+    border-radius: 20px;
+
+    .loginData {
+        padding: 3px;
+    }
+}

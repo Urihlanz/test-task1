@@ -1,11 +1,9 @@
-'use client';
-
-import { Pagination } from '@mui/material';
+import { Card } from '@components/Card';
+import { LogOutButton } from '@components/LogOutButton';
+import { PostsPagination } from '@components/PostsPagination';
+import { getUserData } from '@store/store';
 import { redirect } from 'next/navigation';
-import { NextSeo } from 'next-seo';
-import React, { JSX, useEffect, useState } from 'react';
-import { $userStore, isAuth } from 'src/api/auth/server';
-import { Card } from 'src/components/Card';
+import React, { JSX } from 'react';
 
 import styles from './page.module.scss';
 
@@ -16,45 +14,35 @@ type PostTypes = {
   body: string;
 };
 
-export const Posts = (): JSX.Element => {
-  if (!isAuth($userStore)) return redirect('/auth');
+export async function getPosts(): Promise<PostTypes[]> {
+  const res = await fetch(`${process.env.API_URL}/posts?_page=1`);
+  const data: PostTypes[] = await res.json();
 
-  const [posts, setPosts] = useState<PostTypes[]>();
-  const [page, setPage] = useState(1);
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number): void => {
-    setPage(value);
-    getPosts();
-  };
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
 
-  const getPosts = async (): Promise<void> => {
-    try {
-      const res = await fetch(`https://jsonplaceholder.typicode.com/posts?_page=${page}`);
-      const data: PostTypes[] = await res.json();
+  return data;
+}
 
-      return setPosts(data);
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  };
-
-  useEffect((): void => {
-    getPosts();
-  }, []);
+export const Posts = async (): Promise<JSX.Element> => {
+  const data = await getPosts();
+  if ((await getUserData()) === 401) {
+    redirect('/auth');
+  }
 
   return (
-    <>
-      <NextSeo title='Post page' description='List of the recieved posts' />
-
-      <main className={styles.main}>
-        <div className={styles.wrapper}>
-          {posts?.map((post, index) => {
-            return <Card title={post.title} text={post.body} id={post.id} key={index} />;
-          })}
-          <Pagination count={10} color='primary' page={page} onChange={handlePageChange} />
+    <main className={styles.main}>
+      <div className={styles.wrapper}>
+        {data?.map((post, index) => {
+          return <Card title={post.title} text={post.body} id={post.id} key={index} />;
+        })}
+        <PostsPagination />
+        <div>
+          <LogOutButton />
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   );
 };
 

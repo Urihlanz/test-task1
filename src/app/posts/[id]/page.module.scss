@@ -10,40 +10,24 @@
     .wrapper {
       display: flex;
       flex-direction: column;
-      width: 90vh;
-      height: 80vh;
+      width: 800px; // to px
+      height: 600px; // to px
       background: #fff;
       border-radius: 30px;
       padding: 6rem;
+      overflow-y: scroll;
 
-        .title {
-            color: rgba($color: #000, $alpha: 0.9);
-            font-weight: 800;
-            font-size: 22px;
-        }
-
-        .text {
-            color: rgba($color: #000, $alpha: 0.8);
-            font-weight: 400;
-            font-size: 18px;
-            overflow: hidden;
-        }
-
-        .comments {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 60%;
-            overflow-y: scroll;
-        }
-
-        .commentCard {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            padding: 6px;
-            border: 1px solid #c3c3c3;
-        }
+      .title {
+        color: rgba($color: #000, $alpha: 0.9);
+        font-weight: 800;
+        font-size: 22px;
+      }
+      
+      .text {
+          color: rgba($color: #000, $alpha: 0.8);
+          font-weight: 400;
+          font-size: 20px;
+      }
     }
   }
   

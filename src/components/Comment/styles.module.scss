@@ -1,0 +1,27 @@
+.commentCard {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #c3c3c3;
+
+    .title {
+        color: rgba($color: #000, $alpha: 0.9);
+        font-weight: 800;
+        font-size: 22px;
+    }
+    
+    .email {
+        color: rgba($color: #000, $alpha: 0.8);
+        font-weight: 400;
+        font-size: 20px;
+        overflow: hidden;
+    }
+    
+    .comment {
+        color: rgba($color: #000, $alpha: 0.8);
+        font-weight: 400;
+        font-size: 18px;
+        overflow: hidden;
+    }
+}

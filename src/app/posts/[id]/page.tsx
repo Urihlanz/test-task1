@@ -1,6 +1,6 @@
-'use client';
-
-import React, { JSX, useEffect, useState } from 'react';
+import { Comment } from '@components/Comment';
+import { Metadata } from 'next';
+import React, { cache, JSX } from 'react';
 
 import styles from './page.module.scss';
 
@@ -9,56 +9,55 @@ type PostPropTypes = {
   searchParams: Record<string, never>;
 };
 
-type PostTypes = {
+type Post = {
   userId: number;
   id: number;
   title: string;
   body: string;
 };
 
-type CommentTypes = {
+type CommentType = {
   name: string;
   email: string;
   body: string;
 };
 
-const Comment = ({ name, email, body }: CommentTypes): JSX.Element => (
-  <div className={styles.commentCard}>
-    <h5 className={styles.username}>{name}</h5>
-    <h6 className={styles.email}>{email}</h6>
-    <p className={styles.comment}>{body}</p>
-  </div>
+const getPost = cache(
+  async (params: Record<string, number>): Promise<{ postData: Post; commentData: CommentType[] }> => {
+    const postRes = await fetch(`${process.env.API_URL}/posts/${params.id}`);
+    const commentRes = await fetch(`${process.env.API_URL}/posts/${params.id}/comments`);
+    const postData: Post = await postRes.json();
+    const commentData: CommentType[] = await commentRes.json();
+
+    if (!postRes.ok || !commentRes.ok) {
+      throw new Error('Failed to fetch data');
+    }
+
+    return { postData, commentData };
+  },
 );
 
-const Post = ({ params }: PostPropTypes): JSX.Element => {
-  const [post, setPosts] = useState<PostTypes>();
-  const [comments, setComments] = useState<CommentTypes[]>();
+export async function generateMetadata({ params }: PostPropTypes): Promise<Metadata> {
+  const { postData } = await getPost(params);
+  const title = postData?.title;
+  const description = postData?.body;
 
-  const getPost = async (): Promise<void> => {
-    try {
-      const postRes = await fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`);
-      const commentRes = await fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}/comments`);
-      const postData: PostTypes = await postRes.json();
-      const commentData: CommentTypes[] = await commentRes.json();
-
-      return setPosts(postData), setComments(commentData);
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+  return {
+    title: title,
+    description: description,
   };
+}
 
-  useEffect((): void => {
-    getPost();
-  }, []);
+const Post = async ({ params }: PostPropTypes): Promise<JSX.Element> => {
+  const { postData, commentData } = await getPost(params);
 
   return (
     <div className={styles.main}>
       <div className={styles.wrapper}>
-        <h4 className={styles.title}>{post?.title}</h4>
-        <p className={styles.text}>{post?.body}</p>
+        <h4 className={styles.title}>{postData?.title}</h4>
+        <p className={styles.text}>{postData?.body}</p>
         <div className={styles.comments}>
-          {comments?.map((comment, index) => {
+          {commentData?.map((comment, index) => {
             return <Comment name={comment.name} email={comment.email} body={comment.body} key={index} />;
           })}
         </div>
